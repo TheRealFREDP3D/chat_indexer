@@ -31,3 +31,36 @@
 2025-04-09 16:35:04,161 INFO Index saved to ./output\index_example.json
 2025-04-09 16:35:04,162 INFO Summaries saved to ./output\summary_example.md
 2025-04-09 16:35:04,163 INFO Chat indexing completed successfully
+2025-04-09 18:02:46,687 INFO Starting LLM Chat Indexer
+2025-04-09 18:02:46,692 INFO Starting LLM Chat Indexer
+2025-04-09 18:02:46,693 INFO Input directory: F:\BACKUP\FRED\PROJECTS\__GITHUB-TheRealFredP3D\llm-chat-indexer\REPO\input
+2025-04-09 18:02:46,694 INFO Output directory: F:\BACKUP\FRED\PROJECTS\__GITHUB-TheRealFredP3D\llm-chat-indexer\REPO\output
+2025-04-09 18:02:46,695 INFO Supported extensions: ['.txt', '.md', '.json', '.html', '.csv']
+2025-04-09 18:02:46,696 INFO LLM provider: gemini/gemini-2.0-flash
+2025-04-09 18:02:46,698 INFO Found 4 chat files to process
+2025-04-09 18:02:46,699 INFO Processing file: F:\BACKUP\FRED\PROJECTS\__GITHUB-TheRealFredP3D\llm-chat-indexer\REPO\input\Claude_Output_Formating.md
+2025-04-09 18:02:46,701 DEBUG Retrieved timestamp 2024-10-02T20:14:14.091851 for F:\BACKUP\FRED\PROJECTS\__GITHUB-TheRealFredP3D\llm-chat-indexer\REPO\input\Claude_Output_Formating.md
+2025-04-09 18:02:47,070 DEBUG Retrieved timestamp 2024-10-02T20:14:14.091851 for F:\BACKUP\FRED\PROJECTS\__GITHUB-TheRealFredP3D\llm-chat-indexer\REPO\input\Claude_Output_Formating.md
+2025-04-09 18:02:57,917 INFO Processing file: F:\BACKUP\FRED\PROJECTS\__GITHUB-TheRealFredP3D\llm-chat-indexer\REPO\input\Create a reporting analyst agent.md
+2025-04-09 18:02:57,919 DEBUG Retrieved timestamp 2024-11-23T09:24:36.526487 for F:\BACKUP\FRED\PROJECTS\__GITHUB-TheRealFredP3D\llm-chat-indexer\REPO\input\Create a reporting analyst agent.md
+2025-04-09 18:02:57,932 DEBUG Retrieved timestamp 2024-11-23T09:24:36.526487 for F:\BACKUP\FRED\PROJECTS\__GITHUB-TheRealFredP3D\llm-chat-indexer\REPO\input\Create a reporting analyst agent.md
+2025-04-09 18:03:04,923 INFO Processing file: F:\BACKUP\FRED\PROJECTS\__GITHUB-TheRealFredP3D\llm-chat-indexer\REPO\input\gemini-models.md
+2025-04-09 18:03:04,926 DEBUG Retrieved timestamp 2025-03-31T19:12:56.933123 for F:\BACKUP\FRED\PROJECTS\__GITHUB-TheRealFredP3D\llm-chat-indexer\REPO\input\gemini-models.md
+2025-04-09 18:03:05,040 DEBUG Retrieved timestamp 2025-03-31T19:12:56.933123 for F:\BACKUP\FRED\PROJECTS\__GITHUB-TheRealFredP3D\llm-chat-indexer\REPO\input\gemini-models.md
+2025-04-09 18:03:17,708 INFO Processing file: F:\BACKUP\FRED\PROJECTS\__GITHUB-TheRealFredP3D\llm-chat-indexer\REPO\input\intro storyline.md
+2025-04-09 18:03:17,710 DEBUG Retrieved timestamp 2025-04-07T12:50:02.130280 for F:\BACKUP\FRED\PROJECTS\__GITHUB-TheRealFredP3D\llm-chat-indexer\REPO\input\intro storyline.md
+2025-04-09 18:03:17,720 DEBUG Retrieved timestamp 2025-04-07T12:50:02.130280 for F:\BACKUP\FRED\PROJECTS\__GITHUB-TheRealFredP3D\llm-chat-indexer\REPO\input\intro storyline.md
+2025-04-09 18:03:22,892 INFO Building index and generating summaries
+2025-04-09 18:03:22,894 INFO Formatting timestamps for index entries
+2025-04-09 18:03:22,895 DEBUG Formatted timestamp for Claude_Output_Formating.md
+2025-04-09 18:03:22,896 DEBUG Formatted timestamp for Create a reporting analyst agent.md
+2025-04-09 18:03:22,897 DEBUG Formatted timestamp for gemini-models.md
+2025-04-09 18:03:22,898 DEBUG Formatted timestamp for intro storyline.md
+2025-04-09 18:03:22,898 INFO Writing JSON index to ./output\index_example.json
+2025-04-09 18:03:22,901 INFO Successfully wrote JSON index with 4 file entries
+2025-04-09 18:03:22,902 INFO Generating markdown summary to ./output\summary_example.md
+2025-04-09 18:03:22,904 INFO Successfully wrote markdown summary with 4 file entries
+2025-04-09 18:03:22,906 INFO Successfully processed 4 files
+2025-04-09 18:03:22,906 INFO Index saved to ./output\index_example.json
+2025-04-09 18:03:22,907 INFO Summaries saved to ./output\summary_example.md
+2025-04-09 18:03:22,909 INFO Chat indexing completed successfully
