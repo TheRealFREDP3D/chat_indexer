@@ -1,0 +1,51 @@
+# Project specific
+.env
+input/*
+!input/example/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+.qodo/history.sqlite
+src/appmap.log
+tests/appmap.log
+archive/Project-POC.rar
+archive/v0.1.tar
+archive/v0.2.tar
+archive/WORKING-v0.1-chat-indexer.py
+assets/podcast/LLM Chat Indexer_ Review and Potential.wav
+appmap.log
+.qodo
+TODO.md
