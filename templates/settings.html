@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }} - LLM Chat Indexer{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card">
+            <div class="card-header bg-dark text-white">
+                <h2 class="mb-0">Settings</h2>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('main.settings') }}">
+                    {{ form.csrf_token }}
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.llm_provider.id }}" class="form-label">{{ form.llm_provider.label.text }}</label>
+                        {{ form.llm_provider(class="form-control") }}
+                        <div class="form-text">{{ form.llm_provider.description }}</div>
+                        {% if form.llm_provider.errors %}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.llm_provider.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.max_topic_keywords.id }}" class="form-label">{{ form.max_topic_keywords.label.text }}</label>
+                        {{ form.max_topic_keywords(class="form-control") }}
+                        <div class="form-text">{{ form.max_topic_keywords.description }}</div>
+                        {% if form.max_topic_keywords.errors %}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.max_topic_keywords.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.output_dir.id }}" class="form-label">{{ form.output_dir.label.text }}</label>
+                        {{ form.output_dir(class="form-control") }}
+                        <div class="form-text">{{ form.output_dir.description }}</div>
+                        {% if form.output_dir.errors %}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.output_dir.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="d-grid">
+                        {{ form.submit(class="btn btn-primary") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="card mt-4">
+            <div class="card-header bg-secondary text-white">
+                <h3 class="mb-0">LLM Provider Options</h3>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Provider</th>
+                                <th>Example</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Gemini</td>
+                                <td><code>gemini/gemini-2.0-flash</code></td>
+                            </tr>
+                            <tr>
+                                <td>OpenAI</td>
+                                <td><code>openai/gpt-4</code></td>
+                            </tr>
+                            <tr>
+                                <td>Anthropic</td>
+                                <td><code>anthropic/claude-3-opus</code></td>
+                            </tr>
+                            <tr>
+                                <td>OpenRouter</td>
+                                <td><code>openrouter/...</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="alert alert-info">
+                    <p class="mb-0">
+                        <i class="bi bi-info-circle"></i> 
+                        For a full list of supported providers, see the 
+                        <a href="https://docs.litellm.ai/docs/providers" target="_blank">LiteLLM documentation</a>.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+{% endblock %}
