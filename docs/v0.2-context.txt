@@ -1,0 +1,1604 @@
+# System Context
+
+## I am working on a software system with the following directory structure, architecture, and analyzed files:
+
+## Directory Structure
+```
+├── .env.template
+├── .github
+│   ├── CODE_OF_CONDUCT.md
+│   ├── CONTRIBUTING.md
+│   ├── ISSUE_TEMPLATE
+│   │   ├── bug_report.md
+│   │   ├── custom.md
+│   │   └── feature_request.md
+│   ├── SECURITY.md
+│   └── workflows
+│       └── codeql.yml
+├── .gitignore
+├── .vscode
+│   ├── PythonImportHelper-v2-Completion.json
+│   └── llm-chat-indexer.code-workspace
+├── PROJECT-DESCRIPTION.MD
+├── README.md
+├── __init__.py
+├── app.py
+├── assets
+│   ├── chat-explorer.svg
+│   ├── dashboard-mockup.svg
+│   ├── llm-chat-indexer.png
+│   ├── participant-network.svg
+│   ├── processing_flow.png
+│   ├── project-flowchart.svg
+│   ├── summary_example.png
+│   ├── topic-analysis.svg
+│   └── web_interface_mockup.png
+├── chat_indexer.py
+├── docs
+│   ├── blog
+│   │   └── introducing-llm-chat-indexer.md
+│   ├── gemini-models.md
+│   ├── v0.2-FINAL-context.md
+│   ├── v0.2-FINAL-diagram.md
+│   ├── v0.2-FINAL-sequence-diagram.md
+│   └── v0.2-chat-indexer.drawio
+├── htmlcov
+│   ├── .gitignore
+│   ├── class_index.html
+│   ├── coverage_html_cb_497bf287.js
+│   ├── favicon_32_cb_58284776.png
+│   ├── function_index.html
+│   ├── index.html
+│   ├── keybd_closed_cb_ce680311.png
+│   ├── status.json
+│   ├── style_cb_718ce007.css
+│   ├── z_145eef247bfb46b6___init___py.html
+│   ├── z_145eef247bfb46b6_config_py.html
+│   ├── z_145eef247bfb46b6_file_parser_py.html
+│   ├── z_145eef247bfb46b6_index_builder_py.html
+│   ├── z_145eef247bfb46b6_llm_client_py.html
+│   └── z_145eef247bfb46b6_logger_py.html
+├── logs
+│   └── chat_indexer.log
+├── output
+│   ├── index_example.json
+│   └── summary_example.md
+├── pytest.ini
+├── requirements.txt
+├── src
+│   ├── __init__.py
+│   ├── config.md
+│   ├── config.py
+│   ├── file_parser.md
+│   ├── file_parser.py
+│   ├── index_builder.md
+│   ├── index_builder.py
+│   ├── llm_client.py
+│   ├── logger.py
+│   └── web
+│       ├── __init__.py
+│       ├── forms.py
+│       └── routes.py
+├── static
+│   └── css
+│       └── main.css
+├── templates
+│   ├── base.html
+│   ├── index.html
+│   ├── results.html
+│   ├── settings.html
+│   └── view.html
+├── tests
+│   ├── __init__.py
+│   ├── conftest.py
+│   ├── test_chat_indexer.py
+│   ├── test_config.py
+│   ├── test_file_parser.py
+│   ├── test_index_builder.py
+│   ├── test_llm_client.py
+│   ├── test_llm_client_integration.py
+│   ├── test_logger.py
+│   └── test_run.ps1
+└── v0.1-Chart-min.drawio
+
+```
+
+## Mermaid Diagram
+```mermaid
+graph TB
+    User((User))
+
+    subgraph "LLM Chat Indexer System"
+        subgraph "Web Interface Container"
+            WebApp["Web Application<br>(Flask)"]
+            
+            subgraph "Web Components"
+                Router["Route Handler<br>(Flask Blueprint)"]
+                Forms["Form Handler<br>(Flask-WTF)"]
+                Templates["Template Engine<br>(Jinja2)"]
+                StaticFiles["Static File Server<br>(Flask)"]
+            end
+        end
+
+        subgraph "Core Processing Container"
+            FileProcessor["File Processor<br>(Python)"]
+            
+            subgraph "Parser Components"
+                ParserFactory["Parser Factory<br>(Python OOP)"]
+                TxtParser["Text Parser<br>(Python)"]
+                MDParser["Markdown Parser<br>(Python-Markdown)"]
+                JSONParser["JSON Parser<br>(Python json)"]
+                HTMLParser["HTML Parser<br>(BeautifulSoup4)"]
+                CSVParser["CSV Parser<br>(Pandas)"]
+            end
+
+            subgraph "Processing Components"
+                IndexBuilder["Index Builder<br>(Python)"]
+                LLMClient["LLM Client<br>(LiteLLM)"]
+                ConfigManager["Config Manager<br>(python-dotenv)"]
+                Logger["Logger<br>(Python logging)"]
+            end
+        end
+
+        subgraph "Storage Container"
+            OutputDir["Output Directory<br>(File System)"]
+            LogDir["Log Directory<br>(File System)"]
+        end
+
+        subgraph "External Services"
+            LLMProvider["LLM Provider<br>(Gemini/OpenAI/Anthropic)"]
+            CDN["CDN<br>(Bootstrap CDN)"]
+        end
+    end
+
+    %% User Interactions
+    User -->|"Accesses Web Interface"| WebApp
+    
+    %% Web Component Relations
+    WebApp -->|"Routes Requests"| Router
+    Router -->|"Processes Forms"| Forms
+    Router -->|"Renders"| Templates
+    Templates -->|"Serves"| StaticFiles
+    Templates -->|"Loads Assets"| CDN
+
+    %% Core Processing Flow
+    Router -->|"Initiates Processing"| FileProcessor
+    FileProcessor -->|"Creates"| ParserFactory
+    ParserFactory -->|"Creates"| TxtParser
+    ParserFactory -->|"Creates"| MDParser
+    ParserFactory -->|"Creates"| JSONParser
+    ParserFactory -->|"Creates"| HTMLParser
+    ParserFactory -->|"Creates"| CSVParser
+
+    %% Processing Components Relations
+    FileProcessor -->|"Builds Index"| IndexBuilder
+    FileProcessor -->|"Makes LLM Requests"| LLMClient
+    LLMClient -->|"Calls API"| LLMProvider
+    FileProcessor -->|"Uses"| ConfigManager
+    FileProcessor -->|"Logs Events"| Logger
+
+    %% Storage Relations
+    IndexBuilder -->|"Writes Index"| OutputDir
+    IndexBuilder -->|"Writes Summary"| OutputDir
+    Logger -->|"Writes Logs"| LogDir
+
+    %% Component Dependencies
+    WebApp -->|"Uses"| ConfigManager
+    Router -->|"Uses"| Logger
+    Forms -->|"Validates"| ConfigManager
+```
+
+## Analyzed Files
+<project_metadata>
+# Project Information
+- Workspace root: `f:\BACKUP\FRED\PROJECTS\__GITHUB-TheRealFredP3D\llm-chat-indexer\REPO`
+
+## High Value Files
+
+</project_metadata>
+
+<files>
+<file>
+<file_metadata>
+### src/config.py
+- Reason: Contains core configuration and environment settings that define system boundaries, integrations, and operational parameters
+- File size: 3744 bytes
+</file_metadata>
+<file_source>
+ 1 | """
+ 2 | Configuration module for LLM Chat Indexer.
+ 3 | 
+ 4 | This module loads environment variables from a .env file and provides
+ 5 | configuration settings for the LLM Chat Indexer application. Environment
+ 6 | variables are loaded at import time, before the Config class is instantiated.
+ 7 | 
+ 8 | Environment variables can be set in a .env file in the project root or
+ 9 | directly in the system environment. Values in the .env file will override
+10 | system environment variables.
+11 | """
+12 | 
+13 | import os
+14 | import sys
+15 | from dotenv import load_dotenv
+16 | from litellm import fallbacks
+17 | 
+18 | # Load environment variables from .env file at import time
+19 | # This happens before any Config instances are created
+20 | load_dotenv()
+21 | 
+22 | 
+23 | class Config:
+24 |     """Configuration class for LLM Chat Indexer.
+25 | 
+26 |     Default values are provided for all settings, but critical settings
+27 |     like LLM_API_KEY should be set in the environment or .env file.
+28 | 
+29 |     Attributes:
+30 |         BASE_DIR (str): Base directory for file operations, defaults to current working directory
+31 |         OUTPUT_DIR (str): Directory for generated files, relative to BASE_DIR unless absolute
+32 |         SUMMARY_FILENAME (str): Filename for generated summary file, defaults to "summary.md"
+33 |         INDEX_FILENAME (str): Filename for generated index file, defaults to "index.json"
+34 |         LLM_PROVIDER (str): LLM provider identifier, defaults to "gemini/gemini-2.5-pro-exp-03-25"
+35 |         LLM_API_KEY (str): API key for LLM provider, must be set in environment
+36 |         SUPPORTED_FILE_EXTENSIONS (list): List of supported file extensions for processing
+37 |         MAX_TOPIC_KEYWORDS (int): Maximum number of topic keywords to extract, defaults to 5
+38 |         LOG_LEVEL (str): Logging level, defaults to "INFO"
+39 |         LOG_FILE (str): Path to log file, defaults to "logs/chat_indexer.log"
+40 |     """
+41 | 
+42 |     # Base directory for file operations
+43 |     BASE_DIR = os.getenv("BASE_DIR", os.getcwd())
+44 | 
+45 |     # Output directory for generated files (relative to BASE_DIR unless absolute path)
+46 |     OUTPUT_DIR = os.getenv("OUTPUT_DIR", "./output")
+47 | 
+48 |     # Filenames for generated output
+49 |     SUMMARY_FILENAME = os.getenv("SUMMARY_FILENAME", "summary.md")
+50 |     INDEX_FILENAME = os.getenv("INDEX_FILENAME", "index.json")
+51 | 
+52 |     # LLM service configuration
+53 |     LLM_PROVIDER = os.getenv("LLM_PROVIDER", "gemini/gemini-2.5-pro-exp-03-25")
+54 |     # API key can be from any supported provider (see .env.template examples)
+55 |     LLM_API_KEY = os.getenv("LLM_API_KEY")  # Supports GOOGLE_API_KEY/OPENAI_API_KEY etc via LiteLLM
+56 | 
+57 |     # File types that can be processed
+58 |     SUPPORTED_FILE_EXTENSIONS = os.getenv("SUPPORTED_FILE_EXTENSIONS", ".txt,.md,.json,.html,.csv,").split(",")
+59 | 
+60 |     # Processing parameters
+61 |     MAX_TOPIC_KEYWORDS = int(os.getenv("MAX_TOPIC_KEYWORDS", 5))
+62 | 
+63 |     # Logging configuration
+64 |     LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
+65 |     LOG_FILE = os.getenv("LOG_FILE", "logs/chat_indexer.log")
+66 | 
+67 |     @classmethod
+68 |     def validate_config(cls):
+69 |         """Validate critical configuration settings.
+70 | 
+71 |         Checks for required settings and exits with an error message if any are missing.
+72 |         This should be called at application startup to prevent runtime errors.
+73 | 
+74 |         Raises:
+75 |             SystemExit: If any critical configurations are missing
+76 |         """
+77 |         missing_configs = []
+78 | 
+79 |         # Check for critical configurations
+80 |         if not cls.LLM_API_KEY:
+81 |             missing_configs.append("LLM_API_KEY")
+82 | 
+83 |         # Add validation for other critical configs as needed
+84 | 
+85 |         if missing_configs:
+86 |             print(f"ERROR: Missing critical configuration(s): {', '.join(missing_configs)}")
+87 |             print("Please set these values in your environment or .env file.")
+88 |             sys.exit(1)
+89 | </file_source>
+
+</file>
+<file>
+<file_metadata>
+### src/llm_client.py
+- Reason: Core service component that handles LLM provider integration, error handling, and async processing capabilities
+- File size: 13367 bytes
+</file_metadata>
+<file_source>
+  1 | """
+  2 | LLM client module for interacting with language models.
+  3 | Uses litellm to support various LLM providers.
+  4 | """
+  5 | 
+  6 | import time
+  7 | import asyncio
+  8 | import logging
+  9 | from dataclasses import dataclass
+ 10 | from typing import List, Optional, Dict, Any, Union
+ 11 | from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
+ 12 | from litellm import (
+ 13 |     completion,
+ 14 |     acompletion,
+ 15 |     RateLimitError,
+ 16 |     ServiceUnavailableError,
+ 17 |     ModelResponse,
+ 18 |     InvalidRequestError,
+ 19 |     AuthenticationError,
+ 20 |     ContextWindowExceededError,
+ 21 | )
+ 22 | 
+ 23 | logger = logging.getLogger("LLMChatIndexer")
+ 24 | 
+ 25 | 
+ 26 | @dataclass
+ 27 | class LLMStats:
+ 28 |     """Statistics for LLM API usage"""
+ 29 | 
+ 30 |     request_count: int = 0
+ 31 |     error_count: int = 0
+ 32 |     total_tokens: int = 0
+ 33 |     last_request_time: float = 0.0
+ 34 | 
+ 35 | 
+ 36 | class LLMClientError(Exception):
+ 37 |     """Base exception for LLM client errors"""
+ 38 | 
+ 39 |     pass
+ 40 | 
+ 41 | 
+ 42 | class ProviderValidationError(LLMClientError):
+ 43 |     """Raised when provider validation fails"""
+ 44 | 
+ 45 |     pass
+ 46 | 
+ 47 | 
+ 48 | class LLMClient:
+ 49 |     """Client for interacting with LLMs via litellm."""
+ 50 | 
+ 51 |     # Known provider prefixes for validation
+ 52 |     SUPPORTED_PROVIDERS = {"gemini", "openai", "anthropic", "groq"}
+ 53 | 
+ 54 |     def __init__(
+ 55 |         self, provider: str, max_retries: int = 3, rate_limit_delay: float = 1.0, max_context_length: int = 15000
+ 56 |     ):
+ 57 |         """
+ 58 |         Initialize LLM client with specified provider.
+ 59 | 
+ 60 |         Args:
+ 61 |             provider: LLM provider identifier (e.g., 'gemini/gemini-2.0-flash')
+ 62 |             max_retries: Maximum number of retry attempts
+ 63 |             rate_limit_delay: Delay in seconds between API calls
+ 64 |             max_context_length: Maximum context length for the model
+ 65 | 
+ 66 |         Raises:
+ 67 |             ProviderValidationError: If provider string is invalid
+ 68 |         """
+ 69 |         self._validate_provider(provider)
+ 70 |         self.provider = provider
+ 71 |         self.max_retries = max_retries
+ 72 |         self.rate_limit_delay = rate_limit_delay
+ 73 |         self.max_context_length = max_context_length
+ 74 |         self.stats = LLMStats()
+ 75 | 
+ 76 |     @classmethod
+ 77 |     def _validate_provider(cls, provider: str) -> None:
+ 78 |         """
+ 79 |         Validate provider string format and supported providers.
+ 80 | 
+ 81 |         Args:
+ 82 |             provider: Provider string to validate
+ 83 | 
+ 84 |         Raises:
+ 85 |             ProviderValidationError: If validation fails
+ 86 |         """
+ 87 |         try:
+ 88 |             provider_name = provider.split("/")[0].lower()
+ 89 |             if provider_name not in cls.SUPPORTED_PROVIDERS:
+ 90 |                 raise ProviderValidationError(
+ 91 |                     f"Unsupported provider: {provider_name}. Must be one of: {', '.join(cls.SUPPORTED_PROVIDERS)}"
+ 92 |                 )
+ 93 |         except (AttributeError, IndexError):
+ 94 |             raise ProviderValidationError("Provider must be in format: 'provider/model'")
+ 95 | 
+ 96 |     def _handle_rate_limit(self) -> None:
+ 97 |         """
+ 98 |         Implement basic rate limiting between requests.
+ 99 |         Updates stats and enforces delay between requests.
+100 |         """
+101 |         current_time = time.time()
+102 |         time_since_last_request = current_time - self.stats.last_request_time
+103 | 
+104 |         if time_since_last_request < self.rate_limit_delay:
+105 |             sleep_time = self.rate_limit_delay - time_since_last_request
+106 |             logger.debug(f"Rate limiting: sleeping for {sleep_time:.2f} seconds")
+107 |             time.sleep(sleep_time)
+108 | 
+109 |         self.stats.last_request_time = time.time()
+110 |         self.stats.request_count += 1
+111 | 
+112 |     def _truncate_text(self, text: str) -> str:
+113 |         """
+114 |         Truncate text to maximum context length.
+115 | 
+116 |         Args:
+117 |             text: Text to truncate
+118 | 
+119 |         Returns:
+120 |             Truncated text with ellipsis if needed
+121 |         """
+122 |         if len(text) > self.max_context_length:
+123 |             truncated = f"{text[: self.max_context_length]}..."
+124 |             logger.info(f"Text truncated from {len(text)} to {self.max_context_length} characters")
+125 |             return truncated
+126 |         return text
+127 | 
+128 |     def _update_error_stats(self, error: Exception) -> None:
+129 |         """
+130 |         Update error statistics and log error details.
+131 | 
+132 |         Args:
+133 |             error: Exception that occurred
+134 |         """
+135 |         self.stats.error_count += 1
+136 |         logger.error(f"LLM API error ({type(error).__name__}): {str(error)}")
+137 | 
+138 |     @retry(
+139 |         stop=stop_after_attempt(lambda self: self.max_retries),
+140 |         wait=wait_exponential(multiplier=1, min=1, max=10),
+141 |         retry=retry_if_exception_type((RateLimitError, ServiceUnavailableError)),
+142 |         reraise=True,
+143 |     )
+144 |     def _make_llm_request(self, messages: List[Dict[str, str]]) -> Optional[ModelResponse]:
+145 |         """
+146 |         Make a request to the LLM with retry logic.
+147 | 
+148 |         Args:
+149 |             messages: List of message objects
+150 | 
+151 |         Returns:
+152 |             ModelResponse or None if request failed
+153 |         """
+154 |         self._handle_rate_limit()
+155 | 
+156 |         try:
+157 |             response = completion(model=self.provider, messages=messages)
+158 |             if response and hasattr(response, "usage"):
+159 |                 self.stats.total_tokens += response.usage.total_tokens
+160 |             return response
+161 | 
+162 |         except (RateLimitError, ServiceUnavailableError) as e:
+163 |             self._update_error_stats(e)
+164 |             raise  # Will be caught by retry decorator
+165 | 
+166 |         except ContextWindowExceededError as e:
+167 |             self._update_error_stats(e)
+168 |             logger.debug(f"Message length: {sum(len(m.get('content', '')) for m in messages)}")
+169 |             return None
+170 | 
+171 |         except (InvalidRequestError, AuthenticationError) as e:
+172 |             self._update_error_stats(e)
+173 |             logger.debug(f"Request messages: {messages}")
+174 |             return None
+175 | 
+176 |         except Exception as e:
+177 |             self._update_error_stats(e)
+178 |             logger.error(f"Unexpected error: {str(e)}")
+179 |             return None
+180 | 
+181 |     def get_stats(self) -> Dict[str, Any]:
+182 |         """
+183 |         Get current usage statistics.
+184 | 
+185 |         Returns:
+186 |             Dictionary containing usage statistics
+187 |         """
+188 |         return {
+189 |             "requests": self.stats.request_count,
+190 |             "errors": self.stats.error_count,
+191 |             "total_tokens": self.stats.total_tokens,
+192 |             "provider": self.provider,
+193 |         }
+194 | 
+195 |     async def _make_llm_request_async(self, messages: List[Dict[str, str]]) -> Optional[ModelResponse]:
+196 |         """
+197 |         Make an async request to the LLM.
+198 | 
+199 |         Args:
+200 |             messages: List of message objects
+201 | 
+202 |         Returns:
+203 |             ModelResponse or None if request failed
+204 |         """
+205 |         self._handle_rate_limit()
+206 | 
+207 |         try:
+208 |             response = await acompletion(model=self.provider, messages=messages)
+209 |             if response and hasattr(response, "usage"):
+210 |                 self.stats.total_tokens += response.usage.total_tokens
+211 |             return response
+212 | 
+213 |         except (RateLimitError, ServiceUnavailableError) as e:
+214 |             self._update_error_stats(e)
+215 |             await asyncio.sleep(self.rate_limit_delay)
+216 |             return None
+217 | 
+218 |         except Exception as e:
+219 |             self._update_error_stats(e)
+220 |             logger.error(f"Async request error: {str(e)}")
+221 |             return None
+222 | 
+223 |     def extract_topics(self, messages: List[Dict[str, str]], max_topics: int = 5) -> List[str]:
+224 |         """
+225 |         Extract topics from messages using LLM.
+226 | 
+227 |         Args:
+228 |             messages: List of chat messages
+229 |             max_topics: Maximum number of topics to extract
+230 | 
+231 |         Returns:
+232 |             List of extracted topics
+233 |         """
+234 |         prompt = self._create_topic_extraction_prompt(messages, max_topics)
+235 |         response = self._make_llm_request([{"role": "user", "content": prompt}])
+236 | 
+237 |         if not response:
+238 |             logger.warning("Topic extraction failed, returning empty list")
+239 |             return []
+240 | 
+241 |         return self._parse_topics_response(response.choices[0].message.content)
+242 | 
+243 |     async def extract_topics_async(self, messages: List[Dict[str, str]], max_topics: int = 5) -> List[str]:
+244 |         """
+245 |         Extract topics from messages using LLM asynchronously.
+246 | 
+247 |         Args:
+248 |             messages: List of chat messages
+249 |             max_topics: Maximum number of topics to extract
+250 | 
+251 |         Returns:
+252 |             List of extracted topics
+253 |         """
+254 |         prompt = self._create_topic_extraction_prompt(messages, max_topics)
+255 |         response = await self._make_llm_request_async([{"role": "user", "content": prompt}])
+256 | 
+257 |         if not response:
+258 |             logger.warning("Async topic extraction failed, returning empty list")
+259 |             return []
+260 | 
+261 |         return self._parse_topics_response(response.choices[0].message.content)
+262 | 
+263 |     def summarize(self, messages: List[Dict[str, str]]) -> str:
+264 |         """
+265 |         Generate a summary of the chat messages.
+266 | 
+267 |         Args:
+268 |             messages: List of chat messages
+269 | 
+270 |         Returns:
+271 |             Generated summary string
+272 |         """
+273 |         prompt = self._create_summary_prompt(messages)
+274 |         response = self._make_llm_request([{"role": "user", "content": prompt}])
+275 | 
+276 |         if not response:
+277 |             logger.warning("Summarization failed, returning empty string")
+278 |             return ""
+279 | 
+280 |         return response.choices[0].message.content.strip()
+281 | 
+282 |     async def summarize_async(self, messages: List[Dict[str, str]]) -> str:
+283 |         """
+284 |         Generate a summary of the chat messages asynchronously.
+285 | 
+286 |         Args:
+287 |             messages: List of chat messages
+288 | 
+289 |         Returns:
+290 |             Generated summary string
+291 |         """
+292 |         prompt = self._create_summary_prompt(messages)
+293 |         response = await self._make_llm_request_async([{"role": "user", "content": prompt}])
+294 | 
+295 |         if not response:
+296 |             logger.warning("Async summarization failed, returning empty string")
+297 |             return ""
+298 | 
+299 |         return response.choices[0].message.content.strip()
+300 | 
+301 |     def _create_topic_extraction_prompt(self, messages: List[Dict[str, str]], max_topics: int) -> str:
+302 |         """
+303 |         Create prompt for topic extraction.
+304 | 
+305 |         Args:
+306 |             messages: List of chat messages
+307 |             max_topics: Maximum number of topics to extract
+308 | 
+309 |         Returns:
+310 |             Formatted prompt string
+311 |         """
+312 |         conversation = self._format_messages_for_prompt(messages)
+313 |         return (
+314 |             f"Extract up to {max_topics} main topics from this conversation. "
+315 |             f"Return them as a comma-separated list:\n\n{conversation}"
+316 |         )
+317 | 
+318 |     def _create_summary_prompt(self, messages: List[Dict[str, str]]) -> str:
+319 |         """
+320 |         Create prompt for summarization.
+321 | 
+322 |         Args:
+323 |             messages: List of chat messages
+324 | 
+325 |         Returns:
+326 |             Formatted prompt string
+327 |         """
+328 |         conversation = self._format_messages_for_prompt(messages)
+329 |         return (
+330 |             "Provide a concise summary of this conversation, "
+331 |             "focusing on the main points and conclusions:\n\n"
+332 |             f"{conversation}"
+333 |         )
+334 | 
+335 |     def _format_messages_for_prompt(self, messages: List[Union[Dict[str, str], str]]) -> str:
+336 |         """
+337 |         Format messages for inclusion in prompts.
+338 | 
+339 |         Args:
+340 |             messages: List of chat messages (can be dictionaries or strings)
+341 | 
+342 |         Returns:
+343 |             Formatted conversation string
+344 |         """
+345 |         formatted = []
+346 |         for msg in messages:
+347 |             if isinstance(msg, dict):
+348 |                 role = msg.get("role", "unknown").capitalize()
+349 |                 content = msg.get("content", "").strip()
+350 |                 formatted.append(f"{role}: {content}")
+351 |             else:
+352 |                 # If message is a string, treat it as content with unknown role
+353 |                 formatted.append(f"Message: {msg.strip()}")
+354 |         return "\n".join(formatted)
+355 | 
+356 |     def _parse_topics_response(self, response_text: str) -> List[str]:
+357 |         """
+358 |         Parse topics from LLM response.
+359 | 
+360 |         Args:
+361 |             response_text: Raw response from LLM
+362 | 
+363 |         Returns:
+364 |             List of cleaned topic strings
+365 |         """
+366 |         if not response_text:
+367 |             return []
+368 | 
+369 |         topics = [topic.strip() for topic in response_text.split(",") if topic.strip()]
+370 |         return topics[:5]  # Limit to 5 topics maximum
+371 | 
+372 |     async def process_batch(
+373 |         self, message_batches: List[List[Dict[str, str]]]
+374 |     ) -> List[Dict[str, Union[List[str], str]]]:
+375 |         """
+376 |         Process multiple conversations in parallel.
+377 | 
+378 |         Args:
+379 |             message_batches: List of conversation message lists
+380 | 
+381 |         Returns:
+382 |             List of dictionaries containing topics and summaries
+383 |         """
+384 |         tasks = []
+385 |         for messages in message_batches:
+386 |             tasks.extend([self.extract_topics_async(messages), self.summarize_async(messages)])
+387 | 
+388 |         results = await asyncio.gather(*tasks, return_exceptions=True)
+389 | 
+390 |         processed_results = []
+391 |         for i in range(0, len(results), 2):
+392 |             topics = results[i] if not isinstance(results[i], Exception) else []
+393 |             summary = results[i + 1] if not isinstance(results[i + 1], Exception) else ""
+394 | 
+395 |             processed_results.append({"topics": topics, "summary": summary})
+396 | 
+397 |         return processed_results
+398 | </file_source>
+
+</file>
+<file>
+<file_metadata>
+### src/web/routes.py
+- Reason: Defines the web interface structure and main application flows, showing how the system handles user interactions
+- File size: 6507 bytes
+</file_metadata>
+<file_source>
+  1 | """
+  2 | Routes for the LLM Chat Indexer web interface.
+  3 | """
+  4 | 
+  5 | import os
+  6 | import json
+  7 | from flask import Blueprint, render_template, redirect, url_for, flash, request, current_app, send_from_directory
+  8 | from werkzeug.utils import secure_filename
+  9 | 
+ 10 | from src.config import Config
+ 11 | from src.file_parser import parse_file
+ 12 | from src.llm_client import LLMClient
+ 13 | from src.index_builder import build_index, get_timestamp
+ 14 | from src.web.forms import UploadForm, SettingsForm
+ 15 | 
+ 16 | # Create blueprint
+ 17 | main_bp = Blueprint('main', __name__)
+ 18 | 
+ 19 | # Allowed file extensions
+ 20 | ALLOWED_EXTENSIONS = set([ext.strip('.') for ext in Config.SUPPORTED_FILE_EXTENSIONS if ext.strip('.')])
+ 21 | 
+ 22 | def allowed_file(filename):
+ 23 |     """Check if a file has an allowed extension."""
+ 24 |     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+ 25 | 
+ 26 | @main_bp.route('/')
+ 27 | def index():
+ 28 |     """Render the home page."""
+ 29 |     upload_form = UploadForm()
+ 30 |     return render_template('index.html', form=upload_form, title='LLM Chat Indexer')
+ 31 | 
+ 32 | @main_bp.route('/upload', methods=['POST'])
+ 33 | def upload_file():
+ 34 |     """Handle file upload."""
+ 35 |     form = UploadForm()
+ 36 |     
+ 37 |     if form.validate_on_submit():
+ 38 |         # Check if the post request has the file part
+ 39 |         if 'file' not in request.files:
+ 40 |             flash('No file part', 'error')
+ 41 |             return redirect(request.url)
+ 42 |             
+ 43 |         file = request.files['file']
+ 44 |         
+ 45 |         # If user does not select file, browser also
+ 46 |         # submit an empty part without filename
+ 47 |         if file.filename == '':
+ 48 |             flash('No selected file', 'error')
+ 49 |             return redirect(request.url)
+ 50 |             
+ 51 |         if file and allowed_file(file.filename):
+ 52 |             filename = secure_filename(file.filename)
+ 53 |             file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+ 54 |             file.save(file_path)
+ 55 |             
+ 56 |             # Process the file
+ 57 |             try:
+ 58 |                 # Read file content
+ 59 |                 with open(file_path, 'r', encoding='utf-8') as f:
+ 60 |                     content = f.read()
+ 61 |                 
+ 62 |                 # Initialize LLM client
+ 63 |                 llm_client = LLMClient(Config.LLM_PROVIDER)
+ 64 |                 
+ 65 |                 # Parse file
+ 66 |                 messages = parse_file(file_path, content)
+ 67 |                 timestamp = get_timestamp(file_path)
+ 68 |                 
+ 69 |                 if not messages:
+ 70 |                     flash('No messages extracted from file', 'warning')
+ 71 |                     return redirect(url_for('main.index'))
+ 72 |                 
+ 73 |                 # Extract topics
+ 74 |                 topics = llm_client.extract_topics(messages, Config.MAX_TOPIC_KEYWORDS)
+ 75 |                 
+ 76 |                 # Generate summary
+ 77 |                 summary = llm_client.summarize(messages)
+ 78 |                 
+ 79 |                 # Create file data
+ 80 |                 file_data = {
+ 81 |                     "filename": filename,
+ 82 |                     "path": file_path,
+ 83 |                     "timestamp": timestamp,
+ 84 |                     "topics": topics,
+ 85 |                     "summary": summary,
+ 86 |                     "message_count": len(messages)
+ 87 |                 }
+ 88 |                 
+ 89 |                 # Build index
+ 90 |                 os.makedirs(Config.OUTPUT_DIR, exist_ok=True)
+ 91 |                 build_index({"files": [file_data]}, Config.OUTPUT_DIR, Config.INDEX_FILENAME, Config.SUMMARY_FILENAME)
+ 92 |                 
+ 93 |                 flash('File processed successfully', 'success')
+ 94 |                 return redirect(url_for('main.results'))
+ 95 |                 
+ 96 |             except Exception as e:
+ 97 |                 flash(f'Error processing file: {str(e)}', 'error')
+ 98 |                 return redirect(url_for('main.index'))
+ 99 |         else:
+100 |             flash(f'File type not allowed. Allowed types: {", ".join(ALLOWED_EXTENSIONS)}', 'error')
+101 |             return redirect(url_for('main.index'))
+102 |     
+103 |     flash('Form validation failed', 'error')
+104 |     return redirect(url_for('main.index'))
+105 | 
+106 | @main_bp.route('/results')
+107 | def results():
+108 |     """Show processing results."""
+109 |     # Check if index file exists
+110 |     index_path = os.path.join(Config.OUTPUT_DIR, Config.INDEX_FILENAME)
+111 |     if not os.path.exists(index_path):
+112 |         flash('No processed files found', 'warning')
+113 |         return redirect(url_for('main.index'))
+114 |     
+115 |     # Read index file
+116 |     with open(index_path, 'r', encoding='utf-8') as f:
+117 |         index_data = json.load(f)
+118 |     
+119 |     return render_template('results.html', 
+120 |                           title='Processing Results',
+121 |                           files=index_data.get('files', []))
+122 | 
+123 | @main_bp.route('/view/<filename>')
+124 | def view_file(filename):
+125 |     """View a specific file's summary."""
+126 |     # Check if index file exists
+127 |     index_path = os.path.join(Config.OUTPUT_DIR, Config.INDEX_FILENAME)
+128 |     if not os.path.exists(index_path):
+129 |         flash('No processed files found', 'warning')
+130 |         return redirect(url_for('main.index'))
+131 |     
+132 |     # Read index file
+133 |     with open(index_path, 'r', encoding='utf-8') as f:
+134 |         index_data = json.load(f)
+135 |     
+136 |     # Find the file
+137 |     file_data = None
+138 |     for file in index_data.get('files', []):
+139 |         if file.get('filename') == filename:
+140 |             file_data = file
+141 |             break
+142 |     
+143 |     if not file_data:
+144 |         flash(f'File {filename} not found', 'error')
+145 |         return redirect(url_for('main.results'))
+146 |     
+147 |     return render_template('view.html', 
+148 |                           title=f'View {filename}',
+149 |                           file=file_data)
+150 | 
+151 | @main_bp.route('/settings', methods=['GET', 'POST'])
+152 | def settings():
+153 |     """Settings page."""
+154 |     form = SettingsForm()
+155 |     
+156 |     if form.validate_on_submit():
+157 |         # Update settings
+158 |         # Note: This is a simplified version that doesn't actually update the .env file
+159 |         flash('Settings updated', 'success')
+160 |         return redirect(url_for('main.index'))
+161 |     
+162 |     # Pre-populate form with current settings
+163 |     form.llm_provider.data = Config.LLM_PROVIDER
+164 |     form.max_topic_keywords.data = Config.MAX_TOPIC_KEYWORDS
+165 |     form.output_dir.data = Config.OUTPUT_DIR
+166 |     
+167 |     return render_template('settings.html', 
+168 |                           title='Settings',
+169 |                           form=form)
+170 | 
+171 | @main_bp.route('/download/<filename>')
+172 | def download_file(filename):
+173 |     """Download a file from the output directory."""
+174 |     return send_from_directory(directory=Config.OUTPUT_DIR, path=filename, as_attachment=True)
+175 | </file_source>
+
+</file>
+<file>
+<file_metadata>
+### app.py
+- Reason: Main application entry point showing system initialization and core dependencies
+- File size: 529 bytes
+</file_metadata>
+<file_source>
+ 1 | """
+ 2 | LLM Chat Indexer - Web Interface
+ 3 | 
+ 4 | Flask web application for the LLM Chat Indexer.
+ 5 | """
+ 6 | 
+ 7 | import os
+ 8 | import sys
+ 9 | from flask import Flask, render_template, redirect, url_for, flash, request, send_from_directory
+10 | from werkzeug.utils import secure_filename
+11 | 
+12 | # Add src directory to path
+13 | sys.path.append(os.path.join(os.path.dirname(__file__), "src"))
+14 | 
+15 | from src.config import Config
+16 | from src.web import create_app
+17 | 
+18 | if __name__ == "__main__":
+19 |     app = create_app()
+20 |     app.run(debug=True, host="0.0.0.0", port=5000)
+21 | </file_source>
+
+</file>
+<file>
+<file_metadata>
+### PROJECT-DESCRIPTION.MD
+- Reason: Provides high-level system overview, processing flow, and key architectural features
+- File size: 1307 bytes
+</file_metadata>
+<file_source>
+ 1 | # llm-chat-indexer
+ 2 | 
+ 3 | ![LLM Chat Indexer](assets/llm-chat-indexer.png)
+ 4 | 
+ 5 | This is an LLM Chat Indexer - a Python tool that processes chat conversation files in various formats (.txt, .md, .json, .html, .csv) and uses AI (via LiteLLM) to:
+ 6 | 
+ 7 | ## Processing Flow
+ 8 | 
+ 9 | Our efficient processing pipeline:
+10 | 
+11 | ![Processing Flow](assets/processing_flow.png)
+12 | 
+13 | ## Example Output
+14 | 
+15 | Sample summary generated by the tool:
+16 | 
+17 | ![Summary Example](assets/summary_example.png)
+18 | 
+19 | - Extract key topics from conversations
+20 | - Generate summaries of chat content
+21 | - Create a searchable JSON index
+22 | - Produce a readable markdown summary
+23 | 
+24 | **Key features:**
+25 | 
+26 | - Supports multiple LLM providers (Gemini, OpenAI, Anthropic, etc.)
+27 | - Configurable via environment variables or `.env` file
+28 | - Command-line interface with customizable parameters
+29 | - Handles multiple chat file formats
+30 | - Includes logging and error handling
+31 | 
+32 | The tool is particularly useful for organizing and making searchable large collections of chat conversations, with the AI component helping to identify main themes and create concise summaries.
+33 | 
+34 | **The project follows good software engineering practices with:**
+35 | 
+36 | - Clear code organization
+37 | - Comprehensive testing
+38 | - Proper error handling
+39 | - Detailed documentation
+40 | - CI/CD integration via GitHub Actions
+41 | </file_source>
+
+</file>
+<file>
+<file_metadata>
+### src/index_builder.py
+- Reason: Core processing component that handles data transformation and persistence
+- File size: 8381 bytes
+</file_metadata>
+<file_source>
+  1 | """
+  2 | Index builder module for creating searchable indexes and summaries.
+  3 | 
+  4 | This module provides functionality to:
+  5 | 1. Build JSON indexes and markdown summaries from processed chat data
+  6 | 2. Format timestamps for better readability
+  7 | 3. Generate structured markdown documentation with metadata, summaries, and key points
+  8 | 4. Handle errors gracefully with detailed error reporting
+  9 | 
+ 10 | Main components:
+ 11 | - build_index(): Creates JSON index and markdown summary files from processed data
+ 12 | - get_timestamp(): Retrieves ISO formatted timestamp from file modification time
+ 13 | 
+ 14 | Example usage:
+ 15 |     index_data = {
+ 16 |         "files": [
+ 17 |             {
+ 18 |                 "filename": "chat1.txt",
+ 19 |                 "summary": "Discussion about project planning",
+ 20 |                 "topics": ["planning", "project management"],
+ 21 |                 "timestamp": "2024-03-21T14:30:00"
+ 22 |             }
+ 23 |         ]
+ 24 |     }
+ 25 |     success = build_index(
+ 26 |         index_data=index_data,
+ 27 |         output_dir="./output",
+ 28 |         index_filename="index.json",
+ 29 |         summary_filename="summary.md"
+ 30 |     )
+ 31 | """
+ 32 | 
+ 33 | import os
+ 34 | import json
+ 35 | import logging
+ 36 | import traceback
+ 37 | from datetime import datetime
+ 38 | 
+ 39 | logger = logging.getLogger("LLMChatIndexer")
+ 40 | 
+ 41 | 
+ 42 | def build_index(index_data, output_dir, index_filename, summary_filename):
+ 43 |     """
+ 44 |     Build JSON index and markdown summary files.
+ 45 | 
+ 46 |     Args:
+ 47 |         index_data (dict): Processed data with files and topics. Must contain a 'files' key
+ 48 |             with a list of file entries. Each entry should have: filename, summary, topics,
+ 49 |             and optionally timestamp, message_count, participants, key_points.
+ 50 |         output_dir (str): Directory to store output files. Will be created if it doesn't exist.
+ 51 |         index_filename (str): Filename for JSON index (e.g., "index.json")
+ 52 |         summary_filename (str): Filename for markdown summary (e.g., "summary.md")
+ 53 | 
+ 54 |     Returns:
+ 55 |         bool: True if successful, False otherwise
+ 56 | 
+ 57 |     Raises:
+ 58 |         No exceptions are raised; all errors are logged and False is returned
+ 59 |     """
+ 60 |     # Validate inputs
+ 61 |     if not isinstance(index_data, dict) or "files" not in index_data:
+ 62 |         logger.error("Invalid index_data format: expected dict with 'files' key")
+ 63 |         return False
+ 64 | 
+ 65 |     if not output_dir:
+ 66 |         logger.error("No output directory specified")
+ 67 |         return False
+ 68 | 
+ 69 |     if not index_filename or not summary_filename:
+ 70 |         logger.error("Missing filename for index or summary")
+ 71 |         return False
+ 72 | 
+ 73 |     try:
+ 74 |         # Create output directory if it doesn't exist
+ 75 |         os.makedirs(output_dir, exist_ok=True)
+ 76 | 
+ 77 |         # Format timestamps for better readability in the index
+ 78 |         logger.info("Formatting timestamps for index entries")
+ 79 |         for file_entry in index_data["files"]:
+ 80 |             timestamp = file_entry.get("timestamp", "")
+ 81 |             if timestamp:
+ 82 |                 # Parse ISO format and format as more readable
+ 83 |                 try:
+ 84 |                     dt = datetime.fromisoformat(timestamp)
+ 85 |                     file_entry["formatted_date"] = dt.strftime("%Y-%m-%d %H:%M:%S")
+ 86 |                     logger.debug(f"Formatted timestamp for {file_entry.get('filename', 'unknown file')}")
+ 87 |                 except (ValueError, TypeError):
+ 88 |                     logger.warning(
+ 89 |                         f"Invalid timestamp format: {timestamp} for file {file_entry.get('filename', 'unknown file')}"
+ 90 |                     )
+ 91 |                     file_entry["formatted_date"] = timestamp
+ 92 |             else:
+ 93 |                 logger.debug(f"No timestamp found for {file_entry.get('filename', 'unknown file')}")
+ 94 | 
+ 95 |         # Write JSON index
+ 96 |         index_path = os.path.join(output_dir, index_filename)
+ 97 |         logger.info(f"Writing JSON index to {index_path}")
+ 98 |         with open(index_path, "w", encoding="utf-8") as f:
+ 99 |             json.dump(index_data, f, indent=2)
+100 |         logger.info(f"Successfully wrote JSON index with {len(index_data['files'])} file entries")
+101 | 
+102 |         # Write Markdown summary
+103 |         summary_path = os.path.join(output_dir, summary_filename)
+104 |         logger.info(f"Generating markdown summary to {summary_path}")
+105 |         with open(summary_path, "w", encoding="utf-8") as f:
+106 |             # Write header with generation timestamp
+107 |             current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+108 |             f.write(f"# Chat Summaries\n\n")
+109 |             f.write(f"*Generated on: {current_time}*\n\n")
+110 |             f.write(f"This document contains summaries of {len(index_data['files'])} chat files.\n\n")
+111 | 
+112 |             # Add table of contents
+113 |             f.write("## Table of Contents\n\n")
+114 |             for i, entry in enumerate(index_data["files"]):
+115 |                 filename = entry.get("filename", f"File {i + 1}")
+116 |                 anchor = filename.lower().replace(".", "-").replace(" ", "-")
+117 |                 f.write(f"- [{filename}](#{anchor})\n")
+118 |             f.write("\n")
+119 | 
+120 |             # Add summaries
+121 |             for entry in index_data["files"]:
+122 |                 filename = entry.get("filename", "")
+123 |                 summary = entry.get("summary", "No summary available")
+124 |                 topics = entry.get("topics", [])
+125 |                 timestamp = entry.get("formatted_date", entry.get("timestamp", ""))
+126 |                 message_count = entry.get("message_count", 0)
+127 |                 participants = entry.get("participants", [])
+128 | 
+129 |                 f.write(f"## {filename}\n\n")
+130 | 
+131 |                 # File metadata section
+132 |                 f.write("### Metadata\n\n")
+133 |                 if timestamp:
+134 |                     f.write(f"**Date:** {timestamp}\n\n")
+135 |                 if message_count:
+136 |                     f.write(f"**Messages:** {message_count}\n\n")
+137 |                 if participants:
+138 |                     f.write(f"**Participants:** {', '.join(participants)}\n\n")
+139 |                 if topics:
+140 |                     f.write(f"**Topics:** {', '.join(topics)}\n\n")
+141 | 
+142 |                 # Summary section
+143 |                 f.write("### Summary\n\n")
+144 |                 f.write(f"{summary}\n\n")
+145 | 
+146 |                 # Key points section if available
+147 |                 key_points = entry.get("key_points", [])
+148 |                 if key_points:
+149 |                     f.write("### Key Points\n\n")
+150 |                     for point in key_points:
+151 |                         f.write(f"- {point}\n")
+152 |                     f.write("\n")
+153 | 
+154 |                 f.write("---\n\n")
+155 | 
+156 |         logger.info(f"Successfully wrote markdown summary with {len(index_data['files'])} file entries")
+157 |         return True
+158 | 
+159 |     except Exception as e:
+160 |         error_details = traceback.format_exc()
+161 |         logger.error(f"Error building index: {str(e)}")
+162 |         logger.debug(f"Detailed error: {error_details}")
+163 | 
+164 |         # Create a minimal error report if possible
+165 |         try:
+166 |             error_report_path = os.path.join(output_dir, "index_error_report.txt")
+167 |             with open(error_report_path, "w", encoding="utf-8") as f:
+168 |                 f.write(f"Error occurred at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+169 |                 f.write(f"Error message: {str(e)}\n\n")
+170 |                 f.write("Detailed error information:\n")
+171 |                 f.write(error_details)
+172 |             logger.info(f"Error report written to {error_report_path}")
+173 |         except Exception as report_error:
+174 |             logger.error(f"Failed to write error report: {str(report_error)}")
+175 | 
+176 |         return False
+177 | 
+178 | 
+179 | def get_timestamp(file_path):
+180 |     """
+181 |     Get ISO formatted timestamp from file's modification time.
+182 | 
+183 |     Args:
+184 |         file_path (str): Path to the file to get timestamp from
+185 | 
+186 |     Returns:
+187 |         str: ISO formatted timestamp (e.g., "2024-03-21T14:30:00") or empty string on error
+188 | 
+189 |     Note:
+190 |         Returns empty string if file doesn't exist or on any error
+191 |     """
+192 |     if not file_path:
+193 |         logger.warning("Empty file path provided for timestamp retrieval")
+194 |         return ""
+195 | 
+196 |     if not os.path.exists(file_path):
+197 |         logger.warning(f"Cannot get timestamp for non-existent file: {file_path}")
+198 |         return ""
+199 | 
+200 |     try:
+201 |         timestamp = datetime.fromtimestamp(os.path.getmtime(file_path))
+202 |         iso_timestamp = timestamp.isoformat()
+203 |         logger.debug(f"Retrieved timestamp {iso_timestamp} for {file_path}")
+204 |         return iso_timestamp
+205 |     except OSError as e:
+206 |         logger.error(f"Error getting timestamp for {file_path}: {str(e)}")
+207 |         return ""
+208 |     except Exception as e:
+209 |         logger.error(f"Unexpected error getting timestamp for {file_path}: {str(e)}")
+210 |         return ""
+211 | </file_source>
+
+</file>
+<file>
+<file_metadata>
+### src/file_parser.py
+- Reason: Input processing component showing supported file formats and data extraction logic
+- File size: 7845 bytes
+</file_metadata>
+<file_source>
+  1 | """
+  2 | File parsing module for LLM Chat Indexer.
+  3 | Handles various file formats to extract chat messages.
+  4 | 
+  5 | This module uses an object-oriented approach with:
+  6 | 1. An abstract base class (FileParser) that defines the parser interface
+  7 | 2. Concrete parser implementations for each supported file type
+  8 | 3. A factory class (ParserFactory) to create the appropriate parser
+  9 | 
+ 10 | Classes:
+ 11 |     FileParser: Abstract base class for all file parsers
+ 12 |     TxtParser: Parser for plain text files
+ 13 |     MarkdownParser: Parser for markdown files
+ 14 |     JsonParser: Parser for JSON files
+ 15 |     HtmlParser: Parser for HTML files
+ 16 |     CsvParser: Parser for CSV files
+ 17 |     ParserFactory: Factory class to create appropriate parser instances
+ 18 | 
+ 19 | Functions:
+ 20 |     parse_file(file_path, content): Main function that routes file parsing based on extension
+ 21 | 
+ 22 | Supported File Formats:
+ 23 |     - .txt: Plain text files, split by lines
+ 24 |     - .md: Markdown files, extracts paragraphs, headings, lists and quotes
+ 25 |     - .json: JSON files with either list of messages or messages object
+ 26 |     - .html: HTML files, extracts paragraph content
+ 27 |     - .csv: CSV files with 'message' or 'content' columns
+ 28 | 
+ 29 | Error Handling:
+ 30 |     - Logs warnings for unsupported file types
+ 31 |     - Logs errors for parsing failures
+ 32 |     - Returns empty list on any error
+ 33 | """
+ 34 | 
+ 35 | import os
+ 36 | import json
+ 37 | import logging
+ 38 | from abc import ABC, abstractmethod
+ 39 | import pandas as pd
+ 40 | from bs4 import BeautifulSoup
+ 41 | from markdown import markdown
+ 42 | 
+ 43 | logger = logging.getLogger("LLMChatIndexer")
+ 44 | 
+ 45 | 
+ 46 | class FileParser(ABC):
+ 47 |     """Abstract base class for file parsers."""
+ 48 | 
+ 49 |     def __init__(self, file_path):
+ 50 |         """
+ 51 |         Initialize the parser with file path.
+ 52 | 
+ 53 |         Args:
+ 54 |             file_path (str): Path to the file being parsed
+ 55 |         """
+ 56 |         self.file_path = file_path
+ 57 | 
+ 58 |     @abstractmethod
+ 59 |     def parse(self, content):
+ 60 |         """
+ 61 |         Parse the file content and extract messages.
+ 62 | 
+ 63 |         Args:
+ 64 |             content (str): File content as string
+ 65 | 
+ 66 |         Returns:
+ 67 |             list: Extracted messages from the file
+ 68 |         """
+ 69 |         pass
+ 70 | 
+ 71 | 
+ 72 | class TxtParser(FileParser):
+ 73 |     """Parser for plain text files."""
+ 74 | 
+ 75 |     def parse(self, content):
+ 76 |         """
+ 77 |         Parse plain text content by splitting into lines.
+ 78 | 
+ 79 |         Args:
+ 80 |             content (str): Text file content
+ 81 | 
+ 82 |         Returns:
+ 83 |             list: Lines from the text file
+ 84 |         """
+ 85 |         return content.splitlines()
+ 86 | 
+ 87 | 
+ 88 | class MarkdownParser(FileParser):
+ 89 |     """Parser for markdown files."""
+ 90 | 
+ 91 |     def parse(self, content):
+ 92 |         """
+ 93 |         Parse markdown content by converting to HTML and extracting structured content.
+ 94 | 
+ 95 |         Args:
+ 96 |             content (str): Markdown content
+ 97 | 
+ 98 |         Returns:
+ 99 |             list: Extracted messages from markdown
+100 |         """
+101 |         try:
+102 |             html = markdown(content, extensions=["extra"])
+103 |             soup = BeautifulSoup(html, "html.parser")
+104 |             messages = []
+105 | 
+106 |             for p in soup.find_all("p"):
+107 |                 if p.get_text().strip():
+108 |                     messages.append(p.get_text().strip())
+109 | 
+110 |             for heading in soup.find_all(["h1", "h2", "h3", "h4", "h5", "h6"]):
+111 |                 level = int(heading.name[1])
+112 |                 messages.append(f"{'#' * level} {heading.get_text().strip()}")
+113 | 
+114 |             for list_elem in soup.find_all(["ul", "ol"]):
+115 |                 for item in list_elem.find_all("li"):
+116 |                     messages.append(f"- {item.get_text().strip()}")
+117 | 
+118 |             for quote in soup.find_all("blockquote"):
+119 |                 messages.append(f"> {quote.get_text().strip()}")
+120 | 
+121 |             if not messages:
+122 |                 logger.warning(f"No content extracted from markdown file {self.file_path}")
+123 | 
+124 |             return messages
+125 |         except ImportError as e:
+126 |             logger.error(f"Missing dependencies for markdown parsing: {str(e)}")
+127 |             return []
+128 |         except Exception as e:
+129 |             logger.error(f"Error parsing markdown file {self.file_path}: {str(e)}")
+130 |             return []
+131 | 
+132 | 
+133 | class JsonParser(FileParser):
+134 |     """Parser for JSON files."""
+135 | 
+136 |     def parse(self, content):
+137 |         """
+138 |         Parse JSON content to extract messages.
+139 | 
+140 |         Args:
+141 |             content (str): JSON content
+142 | 
+143 |         Returns:
+144 |             list: Extracted messages from JSON
+145 |         """
+146 |         try:
+147 |             data = json.loads(content)
+148 |             if isinstance(data, list):
+149 |                 return [entry.get("message", "") for entry in data if "message" in entry]
+150 |             elif isinstance(data, dict) and "messages" in data:
+151 |                 return [entry.get("content", "") for entry in data["messages"] if "content" in entry]
+152 |             logger.warning(f"Unsupported JSON structure in {self.file_path}")
+153 |         except json.JSONDecodeError as e:
+154 |             logger.error(f"Invalid JSON in {self.file_path}: {str(e)}")
+155 |         except Exception as e:
+156 |             logger.error(f"Error parsing JSON file {self.file_path}: {str(e)}")
+157 |         return []
+158 | 
+159 | 
+160 | class HtmlParser(FileParser):
+161 |     """Parser for HTML files."""
+162 | 
+163 |     def parse(self, content):
+164 |         """
+165 |         Parse HTML content to extract paragraph text.
+166 | 
+167 |         Args:
+168 |             content (str): HTML content
+169 | 
+170 |         Returns:
+171 |             list: Extracted paragraph text from HTML
+172 |         """
+173 |         try:
+174 |             soup = BeautifulSoup(content, "html.parser")
+175 |             return [p.get_text() for p in soup.find_all("p")]
+176 |         except Exception as e:
+177 |             logger.error(f"Error parsing HTML file {self.file_path}: {str(e)}")
+178 |             return []
+179 | 
+180 | 
+181 | class CsvParser(FileParser):
+182 |     """Parser for CSV files."""
+183 | 
+184 |     def parse(self, content):
+185 |         """
+186 |         Parse CSV content to extract messages.
+187 |         Note: The content parameter is not used as CSV files are read directly.
+188 | 
+189 |         Args:
+190 |             content (str): Not used for CSV parsing, file is read directly
+191 | 
+192 |         Returns:
+193 |             list: Extracted messages from CSV
+194 |         """
+195 |         try:
+196 |             df = pd.read_csv(self.file_path)
+197 |             if "message" in df.columns:
+198 |                 return df["message"].dropna().tolist()
+199 |             elif "content" in df.columns:
+200 |                 return df["content"].dropna().tolist()
+201 |             logger.warning(f"No message or content column found in CSV file {self.file_path}")
+202 |         except Exception as e:
+203 |             logger.error(f"Error parsing CSV file {self.file_path}: {str(e)}")
+204 |         return []
+205 | 
+206 | 
+207 | class ParserFactory:
+208 |     """Factory class to create appropriate parser instances."""
+209 | 
+210 |     @staticmethod
+211 |     def get_parser(file_path):
+212 |         """
+213 |         Create and return the appropriate parser for the given file.
+214 | 
+215 |         Args:
+216 |             file_path (str): Path to the file
+217 | 
+218 |         Returns:
+219 |             FileParser: An instance of the appropriate parser or None if unsupported
+220 |         """
+221 |         ext = os.path.splitext(file_path)[1].lower()
+222 |         parsers = {
+223 |             ".txt": TxtParser,
+224 |             ".md": MarkdownParser,
+225 |             ".json": JsonParser,
+226 |             ".html": HtmlParser,
+227 |             ".csv": CsvParser,
+228 |         }
+229 | 
+230 |         parser_class = parsers.get(ext)
+231 |         if parser_class:
+232 |             return parser_class(file_path)
+233 |         else:
+234 |             logger.warning(f"Unsupported file extension: {ext} for file {file_path}")
+235 |             logger.info(f"Supported extensions are: {', '.join(parsers.keys())}")
+236 |             return None
+237 | 
+238 | 
+239 | def parse_file(file_path, content):
+240 |     """
+241 |     Parse file content based on its extension to extract chat messages.
+242 | 
+243 |     Args:
+244 |         file_path (str): Path to the file
+245 |         content (str): File content as string
+246 | 
+247 |     Returns:
+248 |         list: Extracted messages from the file
+249 |     """
+250 |     try:
+251 |         parser = ParserFactory.get_parser(file_path)
+252 |         if parser:
+253 |             return parser.parse(content)
+254 |         return []
+255 |     except Exception as e:
+256 |         logger.error(f"Unexpected error processing file {file_path}: {str(e)}")
+257 |         return []
+258 | </file_source>
+
+</file>
+<file>
+<file_metadata>
+### requirements.txt
+- Reason: Reveals external dependencies and technology stack
+- File size: 331 bytes
+</file_metadata>
+<file_source>
+ 1 | # Core dependencies
+ 2 | python-dotenv>=0.19.0
+ 3 | beautifulsoup4>=4.10.0
+ 4 | markdown>=3.3.6
+ 5 | pandas>=2.0.0  # Required for CSV file parsing
+ 6 | litellm>=0.8.1
+ 7 | 
+ 8 | # Error handling and retries
+ 9 | tenacity>=8.0.1
+10 | 
+11 | # Testing
+12 | pytest>=7.0.0
+13 | pytest-cov>=4.1.0
+14 | 
+15 | # GUI
+16 | PyQt6>=6.4.0
+17 | 
+18 | # Web Interface
+19 | Flask>=2.3.0
+20 | Flask-WTF>=1.2.0
+21 | WTForms>=3.0.0
+22 | Werkzeug>=2.3.0
+23 | 
+24 | </file_source>
+
+</file>
+<file>
+<file_metadata>
+### templates/base.html
+- Reason: Shows web interface structure and component organization
+- File size: 2705 bytes
+</file_metadata>
+<file_source>
+ 1 | <!DOCTYPE html>
+ 2 | <html lang="en">
+ 3 | <head>
+ 4 |     <meta charset="UTF-8">
+ 5 |     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 6 |     <title>{% block title %}LLM Chat Indexer{% endblock %}</title>
+ 7 |     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+ 8 |     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+ 9 |     {% block extra_css %}{% endblock %}
+10 | </head>
+11 | <body>
+12 |     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+13 |         <div class="container">
+14 |             <a class="navbar-brand" href="{{ url_for('main.index') }}">LLM Chat Indexer</a>
+15 |             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+16 |                 <span class="navbar-toggler-icon"></span>
+17 |             </button>
+18 |             <div class="collapse navbar-collapse" id="navbarNav">
+19 |                 <ul class="navbar-nav ms-auto">
+20 |                     <li class="nav-item">
+21 |                         <a class="nav-link" href="{{ url_for('main.index') }}">Home</a>
+22 |                     </li>
+23 |                     <li class="nav-item">
+24 |                         <a class="nav-link" href="{{ url_for('main.results') }}">Results</a>
+25 |                     </li>
+26 |                     <li class="nav-item">
+27 |                         <a class="nav-link" href="{{ url_for('main.settings') }}">Settings</a>
+28 |                     </li>
+29 |                 </ul>
+30 |             </div>
+31 |         </div>
+32 |     </nav>
+33 | 
+34 |     <div class="container mt-4">
+35 |         {% with messages = get_flashed_messages(with_categories=true) %}
+36 |             {% if messages %}
+37 |                 {% for category, message in messages %}
+38 |                     <div class="alert alert-{{ category if category != 'error' else 'danger' }} alert-dismissible fade show" role="alert">
+39 |                         {{ message }}
+40 |                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+41 |                     </div>
+42 |                 {% endfor %}
+43 |             {% endif %}
+44 |         {% endwith %}
+45 | 
+46 |         {% block content %}{% endblock %}
+47 |     </div>
+48 | 
+49 |     <footer class="footer mt-5 py-3 bg-light">
+50 |         <div class="container text-center">
+51 |             <span class="text-muted">LLM Chat Indexer &copy; 2025</span>
+52 |         </div>
+53 |     </footer>
+54 | 
+55 |     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+56 |     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+57 |     {% block extra_js %}{% endblock %}
+58 | </body>
+59 | </html>
+60 | </file_source>
+
+</file>
+<file>
+<file_metadata>
+### src/web/forms.py
+- Reason: Defines data input validation and form handling architecture
+- File size: 1544 bytes
+</file_metadata>
+<file_source>
+ 1 | """
+ 2 | Forms for the LLM Chat Indexer web interface.
+ 3 | """
+ 4 | 
+ 5 | from flask_wtf import FlaskForm
+ 6 | from flask_wtf.file import FileField, FileRequired, FileAllowed
+ 7 | from wtforms import StringField, IntegerField, SubmitField
+ 8 | from wtforms.validators import DataRequired, NumberRange
+ 9 | 
+10 | from src.config import Config
+11 | 
+12 | # Get allowed extensions
+13 | ALLOWED_EXTENSIONS = [ext.strip('.') for ext in Config.SUPPORTED_FILE_EXTENSIONS if ext.strip('.')]
+14 | 
+15 | class UploadForm(FlaskForm):
+16 |     """Form for uploading files."""
+17 |     file = FileField('Select File', 
+18 |                     validators=[
+19 |                         FileRequired(),
+20 |                         FileAllowed(ALLOWED_EXTENSIONS, f'Only {", ".join(ALLOWED_EXTENSIONS)} files allowed')
+21 |                     ])
+22 |     submit = SubmitField('Upload and Process')
+23 | 
+24 | class SettingsForm(FlaskForm):
+25 |     """Form for configuring settings."""
+26 |     llm_provider = StringField('LLM Provider', 
+27 |                               validators=[DataRequired()],
+28 |                               description='Provider identifier (e.g., gemini/gemini-2.0-flash)')
+29 |     max_topic_keywords = IntegerField('Max Topic Keywords',
+30 |                                     validators=[NumberRange(min=1, max=20)],
+31 |                                     description='Maximum number of topics to extract per file')
+32 |     output_dir = StringField('Output Directory',
+33 |                             validators=[DataRequired()],
+34 |                             description='Directory for output files')
+35 |     submit = SubmitField('Save Settings')
+36 | </file_source>
+
+</file>
+</files>
